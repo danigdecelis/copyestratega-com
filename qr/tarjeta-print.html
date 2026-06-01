@@ -26,13 +26,21 @@
     }
 
     html, body {
-      background: var(--black);
+      background: #1a1a1a;
       color: var(--ink);
       font-family: 'DM Sans', system-ui, sans-serif;
       font-weight: 300;
       -webkit-font-smoothing: antialiased;
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
+      min-height: 100vh;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
     }
 
     .card {
@@ -46,6 +54,8 @@
       background: var(--black);
       position: relative;
       overflow: hidden;
+      box-shadow: 0 20px 80px -20px rgba(0,0,0,0.8), 0 0 0 1px rgba(201,168,76,0.08);
+      flex-shrink: 0;
     }
 
     /* Subtle gold glow background */
@@ -216,8 +226,8 @@
     }
 
     @media print {
-      body { background: var(--black); }
-      .card { box-shadow: none; }
+      html, body { background: var(--black); padding: 0; display: block; }
+      .card { box-shadow: none; width: 210mm; height: 297mm; }
     }
   </style>
 </head>
