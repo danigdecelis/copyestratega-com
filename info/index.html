@@ -442,50 +442,110 @@
       filter: grayscale(0%) brightness(1) contrast(1);
     }
 
-    /* ──────────────── CLIENTS GRID (text-only premium) ──────────────── */
+    /* ──────────────── CLIENTS GRID (avatars + logos) ──────────────── */
     .clients-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 0;
       border-top: 1px solid var(--line-soft);
       border-left: 1px solid var(--line-soft);
     }
     .clients-grid .client {
-      padding: 28px 18px;
+      padding: 22px 14px 18px;
       text-align: center;
       border-right: 1px solid var(--line-soft);
       border-bottom: 1px solid var(--line-soft);
-      transition: background 0.3s, color 0.3s;
-      font-family: 'Playfair Display', serif;
-      font-weight: 700;
-      font-size: 1.02rem;
-      letter-spacing: -0.005em;
-      line-height: 1.25;
-      color: var(--ink-dim);
+      transition: background 0.35s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 150px;
+    }
+    .clients-grid .client:hover { background: rgba(201, 168, 76, 0.04); }
+
+    /* Avatar (foto circular) */
+    .clients-grid .avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      object-fit: cover;
+      filter: grayscale(100%) brightness(0.92) contrast(1.05);
+      opacity: 0.72;
+      transition: filter 0.35s, opacity 0.35s;
+      border: 1px solid rgba(201, 168, 76, 0.18);
+    }
+    .clients-grid .client:hover .avatar {
+      filter: grayscale(0%) brightness(1) contrast(1);
+      opacity: 1;
+    }
+
+    /* Logo corporativo (contenedor 64px alto, ancho libre) */
+    .clients-grid .logo {
+      height: 56px;
+      max-width: 130px;
+      width: auto;
+      object-fit: contain;
+      filter: grayscale(100%) brightness(1.5);
+      opacity: 0.7;
+      transition: filter 0.35s, opacity 0.35s;
+    }
+    .clients-grid .logo[data-boost] {
+      mix-blend-mode: screen;
+      filter: grayscale(100%) brightness(2.4) contrast(1);
+      opacity: 0.85;
+    }
+    .clients-grid .logo[data-lift] {
+      mix-blend-mode: screen;
+      filter: grayscale(100%) brightness(2.4) contrast(0.95);
+      opacity: 0.85;
+    }
+    .clients-grid .client:hover .logo {
+      filter: grayscale(0%) brightness(1) contrast(1);
+      opacity: 1;
+      mix-blend-mode: normal;
+    }
+
+    /* Placeholder text (sin logo aún) */
+    .clients-grid .placeholder {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: 1px dashed rgba(201, 168, 76, 0.35);
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 88px;
-    }
-    .clients-grid .client:hover {
-      background: rgba(201, 168, 76, 0.04);
-      color: var(--gold);
-    }
-    .clients-grid .client em {
+      font-family: 'Playfair Display', serif;
       font-style: italic;
-      font-weight: 400;
-      color: var(--muted);
-      font-size: 0.78rem;
-      letter-spacing: 0.06em;
-      display: block;
-      margin-top: 6px;
-      transition: color 0.3s;
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: var(--gold);
+      opacity: 0.55;
     }
-    .clients-grid .client:hover em { color: rgba(201, 168, 76, 0.7); }
+
+    /* Nombre debajo */
+    .clients-grid .name {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      font-size: 0.74rem;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      line-height: 1.3;
+      transition: color 0.35s;
+      min-height: 2.6em;
+      display: flex;
+      align-items: center;
+      text-align: center;
+    }
+    .clients-grid .client:hover .name { color: var(--ink-dim); }
 
     @media (max-width: 640px) {
-      .clients-grid { grid-template-columns: repeat(2, 1fr); }
-      .clients-grid .client { padding: 22px 12px; font-size: 0.92rem; min-height: 76px; }
+      .clients-grid { grid-template-columns: repeat(3, 1fr); }
+      .clients-grid .client { padding: 18px 8px 14px; min-height: 130px; gap: 8px; }
+      .clients-grid .avatar, .clients-grid .placeholder { width: 52px; height: 52px; }
+      .clients-grid .logo { height: 44px; max-width: 90px; }
+      .clients-grid .name { font-size: 0.66rem; }
     }
 
     /* ──────────────── CTA INLINE (botón intermedio) ──────────────── */
@@ -748,18 +808,54 @@
     <section class="section reveal">
       <p class="logos-label">Clientes con los que he trabajado</p>
       <div class="clients-grid">
-        <div class="client">Tutellus</div>
-        <div class="client">Digital Riders</div>
-        <div class="client">Crece sin Límites</div>
-        <div class="client">Escuela de Lujo</div>
-        <div class="client">Racks Academy</div>
-        <div class="client">Talent Network</div>
-        <div class="client">Ana Moreno Marín</div>
-        <div class="client">Vanessa Marrero</div>
-        <div class="client">José Muñoz</div>
-        <div class="client">Zeke Novarino</div>
-        <div class="client">Hackaviss</div>
-        <div class="client">Tuto Biohacker</div>
+        <div class="client">
+          <img class="logo" src="logos/tutellus.svg" alt="Tutellus" loading="lazy" />
+          <span class="name">Tutellus</span>
+        </div>
+        <div class="client">
+          <img class="logo" src="logos/digitalriders.webp" alt="Digital Riders" loading="lazy" />
+          <span class="name">Digital Riders</span>
+        </div>
+        <div class="client">
+          <img class="logo" src="logos/racks.png" alt="Racks Academy" loading="lazy" />
+          <span class="name">Racks Academy</span>
+        </div>
+        <div class="client">
+          <img class="logo" src="logos/escueladelujo.png" alt="Escuela de Lujo" loading="lazy" data-lift />
+          <span class="name">Escuela de Lujo</span>
+        </div>
+        <div class="client">
+          <img class="logo" src="logos/talentnetwork.png" alt="Talent Network" loading="lazy" data-boost />
+          <span class="name">Talent Network</span>
+        </div>
+        <div class="client">
+          <span class="placeholder">C</span>
+          <span class="name">Crece sin Límites</span>
+        </div>
+        <div class="client">
+          <img class="avatar" src="logos/anamoreno.jpg" alt="Ana Moreno Marín" loading="lazy" />
+          <span class="name">Ana Moreno Marín</span>
+        </div>
+        <div class="client">
+          <img class="avatar" src="logos/vanessamarrero.jpg" alt="Vanessa Marrero" loading="lazy" />
+          <span class="name">Vanessa Marrero</span>
+        </div>
+        <div class="client">
+          <img class="avatar" src="logos/josemunoz.jpg" alt="José Muñoz" loading="lazy" />
+          <span class="name">José Muñoz</span>
+        </div>
+        <div class="client">
+          <img class="avatar" src="logos/zekenovarino.jpg" alt="Zeke Novarino" loading="lazy" />
+          <span class="name">Zeke Novarino</span>
+        </div>
+        <div class="client">
+          <img class="avatar" src="logos/hackaviss.jpg" alt="Hackaviss" loading="lazy" />
+          <span class="name">Hackaviss</span>
+        </div>
+        <div class="client">
+          <img class="avatar" src="logos/tutobiohacker.jpg" alt="Tuto Biohacker" loading="lazy" />
+          <span class="name">Tuto Biohacker</span>
+        </div>
       </div>
     </section>
 
