@@ -442,6 +442,52 @@
       filter: grayscale(0%) brightness(1) contrast(1);
     }
 
+    /* ──────────────── CLIENTS GRID (text-only premium) ──────────────── */
+    .clients-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border-top: 1px solid var(--line-soft);
+      border-left: 1px solid var(--line-soft);
+    }
+    .clients-grid .client {
+      padding: 28px 18px;
+      text-align: center;
+      border-right: 1px solid var(--line-soft);
+      border-bottom: 1px solid var(--line-soft);
+      transition: background 0.3s, color 0.3s;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1.02rem;
+      letter-spacing: -0.005em;
+      line-height: 1.25;
+      color: var(--ink-dim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 88px;
+    }
+    .clients-grid .client:hover {
+      background: rgba(201, 168, 76, 0.04);
+      color: var(--gold);
+    }
+    .clients-grid .client em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--muted);
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      display: block;
+      margin-top: 6px;
+      transition: color 0.3s;
+    }
+    .clients-grid .client:hover em { color: rgba(201, 168, 76, 0.7); }
+
+    @media (max-width: 640px) {
+      .clients-grid { grid-template-columns: repeat(2, 1fr); }
+      .clients-grid .client { padding: 22px 12px; font-size: 0.92rem; min-height: 76px; }
+    }
+
     /* ──────────────── CTA INLINE (botón intermedio) ──────────────── */
     .cta-inline {
       margin-top: 44px;
@@ -696,6 +742,23 @@
           Quiero mi Diagnóstico Digital gratuito
         </a>
         <p class="cta-note">Te respondo en menos de 24h.</p>
+      </div>
+    </section>
+
+    <section class="section reveal">
+      <p class="logos-label">Clientes con los que he trabajado</p>
+      <div class="clients-grid">
+        <div class="client">Tutellus</div>
+        <div class="client">Digital Riders</div>
+        <div class="client">Escuela de Lujo</div>
+        <div class="client">Racks Academy</div>
+        <div class="client">Talent Network</div>
+        <div class="client">Ana Moreno Marín</div>
+        <div class="client">Vanessa Marrero</div>
+        <div class="client">José Muñoz</div>
+        <div class="client">Zeke Novarino</div>
+        <div class="client">Hackaviss</div>
+        <div class="client">Tuto Biohacker</div>
       </div>
     </section>
 
