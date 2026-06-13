@@ -10,6 +10,10 @@
   <meta property="og:description" content="Para infoproductores que ya tienen producto, pero ven cómo el funnel no convierte lo que debería. Diagnóstico interactivo, resultado al instante." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://copyestratega.com/info/" />
+  <meta property="og:image" content="https://danigdecelis.github.io/factor-rh-strategy/logo-ca.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Diagnóstico de Fuga de Ingresos para Infoproductores" />
+  <meta name="twitter:description" content="Responde unas preguntas y descubre dónde se te está escapando el dinero. Resultado al instante." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -947,6 +951,22 @@
       <p class="logos-label">Clientes con los que he trabajado</p>
       <div class="clients-grid">
         <div class="client">
+          <img class="avatar" src="logos/josemunoz.jpg" alt="José Muñoz" loading="lazy" />
+          <span class="name">José Muñoz</span>
+        </div>
+        <div class="client">
+          <img class="avatar" src="logos/hackaviss.jpg" alt="Hackaviss" loading="lazy" />
+          <span class="name">Hackaviss</span>
+        </div>
+        <div class="client">
+          <img class="logo" src="logos/talentnetwork.svg" alt="Talent Network" loading="lazy" data-color />
+          <span class="name">Talent Network</span>
+        </div>
+        <div class="client">
+          <img class="logo" src="logos/crecesinlimite.svg" alt="Crece Sin Límite" loading="lazy" />
+          <span class="name">Crece Sin Límite</span>
+        </div>
+        <div class="client">
           <img class="logo" src="logos/tutellus.svg" alt="Tutellus" loading="lazy" />
           <span class="name">Tutellus</span>
         </div>
@@ -963,14 +983,6 @@
           <span class="name">Escuela de Lujo</span>
         </div>
         <div class="client">
-          <img class="logo" src="logos/talentnetwork.svg" alt="Talent Network" loading="lazy" data-color />
-          <span class="name">Talent Network</span>
-        </div>
-        <div class="client">
-          <img class="logo" src="logos/crecesinlimite.svg" alt="Crece Sin Límite" loading="lazy" />
-          <span class="name">Crece Sin Límite</span>
-        </div>
-        <div class="client">
           <img class="avatar" src="logos/anamoreno.jpg" alt="Ana Moreno Marín" loading="lazy" />
           <span class="name">Ana Moreno Marín</span>
         </div>
@@ -979,16 +991,8 @@
           <span class="name">Vanessa Marrero</span>
         </div>
         <div class="client">
-          <img class="avatar" src="logos/josemunoz.jpg" alt="José Muñoz" loading="lazy" />
-          <span class="name">José Muñoz</span>
-        </div>
-        <div class="client">
           <img class="avatar" src="logos/zekenovarino.jpg" alt="Zeke Novarino" loading="lazy" />
           <span class="name">Zeke Novarino</span>
-        </div>
-        <div class="client">
-          <img class="avatar" src="logos/hackaviss.jpg" alt="Hackaviss" loading="lazy" />
-          <span class="name">Hackaviss</span>
         </div>
         <div class="client">
           <img class="avatar" src="logos/tutobiohacker.jpg" alt="Tuto Biohacker" loading="lazy" />
@@ -1033,6 +1037,7 @@
         Ver mi diagnóstico
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
+      <button class="qback" style="margin-top:16px;display:block;" onclick="backToQuiz()">Atrás, quiero revisar una respuesta</button>
       <p class="privacy">Tus datos se usan solo para entregarte este diagnóstico y, si la pides, mi lectura de tu caso. Nada de secuencias infinitas ni cesión a terceros.</p>
     </div>
   </div>
@@ -1220,7 +1225,7 @@
     /* =====================================================
        ESTADO + NAVEGACION
     ===================================================== */
-    let A = {}, AL = {}, MID = {}, path = [], cur = -1, currency = '€';
+    let A = {}, AL = {}, MID = {}, path = [], cur = -1, currency = '$';
 
     function visible(){ return Q.filter(q=>!q.show||q.show(A)); }
 
@@ -1233,6 +1238,19 @@
     function startQuiz(){
       if(path.length===0) next();
       else render();
+      show('quiz');
+    }
+
+    function backToQuiz(){
+      cur = path.length-1;
+      render();
+      show('quiz');
+    }
+
+    function restart(){
+      A = {}; AL = {}; MID = {}; path = []; cur = -1;
+      document.getElementById('rbox').innerHTML = '';
+      next();
       show('quiz');
     }
 
@@ -1266,11 +1284,11 @@
       let h = '<div class="qblock">'+q.block+'</div><div class="qtext">'+q.text+'</div>';
       if(q.sub) h += '<div class="qsub">'+q.sub+'</div>';
       if(q.currency){
-        h += '<div class="curr"><button class="'+(currency==='€'?'sel':'')+'" onclick="setCurr(\'€\')">EUR €</button><button class="'+(currency==='$'?'sel':'')+'" onclick="setCurr(\'$\')">USD $</button></div>';
+        h += '<div class="curr"><button class="'+(currency==='$'?'sel':'')+'" onclick="setCurr(\'$\')">USD $</button><button class="'+(currency==='€'?'sel':'')+'" onclick="setCurr(\'€\')">EUR €</button></div>';
       }
       if(q.free){
-        h += '<textarea id="freetxt" placeholder="Escribe aquí...">'+(A[q.id]||'')+'</textarea>';
-        h += '<div class="qnav"><button class="qback" onclick="back()">Atrás</button><button class="btn-wa" onclick="saveFree()">Continuar</button></div>';
+        h += '<textarea id="freetxt" placeholder="Escribe aquí... (o sáltala, es opcional)">'+(A[q.id]||'')+'</textarea>';
+        h += '<div class="qnav"><button class="qback" onclick="back()">Atrás</button><div style="display:flex;gap:18px;align-items:center;"><button class="qback" onclick="saveFree()">Saltar</button><button class="btn-wa" onclick="saveFree()">Ver mi diagnóstico</button></div></div>';
       } else {
         h += '<div class="opts">'+q.opts.map(o=>
           '<button class="opt'+(A[q.id]===o.v?' sel':'')+'" onclick="pick(\''+q.id+'\',\''+o.v+'\')">'+o.t+'</button>'
@@ -1469,10 +1487,17 @@
       let findings = RULES.filter(r=>r.cond(A)).sort((a,b)=>b.sev-a.sev).slice(0,3);
       if(findings.length===0){
         const weakest = Object.keys(dims).sort((a,b)=>dims[a]-dims[b])[0];
-        findings = [{id:'maduro', sev:1,
-          title:'Tu sistema está sólido. Tu fuga ahora es de afinado, no de construcción',
-          body:()=>`Tienes las piezas que a la mayoría le faltan: frecuencia, arquitectura, recurrencia y métricas. En este punto, la fuga ya no está en lo que falta sino en lo que rinde por debajo de su techo. Según tus respuestas, tu dimensión más floja es ${DIMNAMES[weakest].toLowerCase()} (${dims[weakest]}/100). Ahí es donde un punto porcentual de mejora vale más dinero que cualquier pieza nueva.`,
-          palanca:'En sistemas maduros la palanca es testar, no construir: asuntos, ofertas, precios y segmentación sobre lo que ya funciona. Una mejora del 10% en cada eslabón de un funnel que ya convierte se multiplica, no se suma.'}];
+        if(level.n>=4){
+          findings = [{id:'maduro', sev:1,
+            title:'Tu sistema está sólido. Tu fuga ahora es de afinado, no de construcción',
+            body:()=>`Tienes las piezas que a la mayoría le faltan: frecuencia, arquitectura, recurrencia y métricas. En este punto, la fuga ya no está en lo que falta sino en lo que rinde por debajo de su techo. Según tus respuestas, tu dimensión más floja es ${DIMNAMES[weakest].toLowerCase()} (${dims[weakest]}/100). Ahí es donde un punto porcentual de mejora vale más dinero que cualquier pieza nueva.`,
+            palanca:'En sistemas maduros la palanca es testar, no construir: asuntos, ofertas, precios y segmentación sobre lo que ya funciona. Una mejora del 10% en cada eslabón de un funnel que ya convierte se multiplica, no se suma.'}];
+        } else {
+          findings = [{id:'disperso', sev:1,
+            title:'No hay una fuga única que destaque: tu margen está repartido',
+            body:()=>`Tus respuestas no apuntan a un único agujero grande, sino a varias piezas a medio rendimiento. Tu dimensión más floja ahora mismo es ${DIMNAMES[weakest].toLowerCase()} (${dims[weakest]}/100), y es por donde empezaría. Cuando no hay un incendio, la palanca es elegir un frente y cerrarlo bien antes de abrir el siguiente.`,
+            palanca:`Foco: trabajar ${DIMNAMES[weakest].toLowerCase()} hasta dejarla sólida antes de tocar el resto. Avanzar en una sola dimensión rinde más que mejorar cuatro a la vez sin terminar ninguna.`}];
+        }
       }
       return {dims,total,level,findings};
     }
@@ -1608,6 +1633,10 @@
           <button class="btn-wa ghost" onclick="copyResult()">Copiar mi resultado</button>
         </div>
         <p class="cta-note">Te respondo en menos de 24h.</p>
+      </div>
+
+      <div style="text-align:center;padding:8px 0 0;">
+        <button class="qback" onclick="restart()">Hacer el diagnóstico de nuevo</button>
       </div>`;
 
       document.getElementById('rbox').innerHTML = h;
