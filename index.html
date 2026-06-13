@@ -1556,18 +1556,52 @@
       const online = document.getElementById('f-online').value.trim();
       const result = buildResult();
       if(SUBMIT_URL){
-        // Brief legible: ¿pregunta? -> respuesta, en el orden en que las contestó
+        const ref = new URLSearchParams(location.search).get('r')||'';
+        // Respuestas completas: ¿pregunta? -> respuesta, en el orden en que las contestó
         const detalle = path.map(i=>Q[i]).filter(q=>AL[q.id]).map(q=>q.text+' -> '+AL[q.id]).join('\n');
         const dims = result.dims;
         const dimStr = Object.keys(dims).map(k=>DIMNAMES[k]+': '+dims[k]+'/100').join(' | ');
         const fugaTitulo = typeof result.findings[0].title==='function'?result.findings[0].title():result.findings[0].title;
+
+        // Diagnóstico completo que ya calcula la herramienta (hallazgos + palancas + qué no haría + potencial)
+        const diag = result.findings.map((f,i)=>{
+          const t = typeof f.title==='function'?f.title():f.title;
+          const etq = i===0?'FUGA PRINCIPAL':'HALLAZGO '+(i+1);
+          return etq+': '+t+'\n'+f.body()+'\nPALANCA: '+f.palanca;
+        }).join('\n\n');
+        const anti = antiPriority(result.findings);
+        const mm = mathModule();
+        let potencial = '';
+        if(mm){ let v={}; mm.sliders.forEach(s=>v[s.id]=s.val); potencial = mm.title+': '+mm.fmt(mm.calc(v))+(mm.isLeads?'':'/mes')+'\n('+mm.sub()+')'; }
+
+        const origen = ref ? 'via enlace enviado (r='+ref+')' : 'acceso directo';
+        const sub = 'Lead diagnostico: '+(name||'sin nombre')+' | Nivel '+result.level.n+'/5 | '+fugaTitulo;
+        const linea = '====================================================';
+        const body =
+          'NUEVO DIAGNOSTICO COMPLETADO  ('+origen+')\n'+linea+'\n\n'+
+          'CONTACTO\n'+
+          '  Nombre:    '+(name||'')+'\n'+
+          '  Email:     '+(email||'')+'\n'+
+          '  WhatsApp:  '+(wa||'(no ha dejado)')+'\n'+
+          '  Online:    '+(online||'(no ha dejado enlaces)')+'\n\n'+
+          'RESULTADO\n'+
+          '  Nivel '+result.level.n+'/5  ('+result.level.t+')\n'+
+          '  Score '+result.total+'/100\n'+
+          '  Dimensiones: '+dimStr+'\n\n'+
+          'DIAGNOSTICO DE LA HERRAMIENTA\n'+linea+'\n'+diag+'\n\n'+
+          'QUE NO HARIA AHORA\n'+anti.t+'\n'+anti.b+'\n\n'+
+          (potencial?('POTENCIAL (estimacion con asunciones por defecto)\n'+potencial+'\n\n'):'')+
+          'RESPUESTAS COMPLETAS\n'+linea+'\n'+detalle+'\n\n'+
+          'QUE HA INTENTADO YA\n'+linea+'\n'+(A.intentado&&A.intentado.trim()?A.intentado:'(no ha escrito nada)')+'\n\n'+
+          linea+'\nMaterial listo para investigar su presencia online y, si merece la pena, montar un strategy doc.\n';
+
         const payload = {name, email, wa, online, ts:new Date().toISOString(),
           nivel:result.level.n, nivelTitulo:result.level.t, score:result.total,
           arquetipo:result.findings[0]?.id||'', fugaTitulo,
-          dimensiones: dimStr,
-          detalle,
+          dimensiones: dimStr, detalle,
           respuestas: Object.keys(AL).map(k=>k+': '+AL[k]).join(' | '),
-          intentado: A.intentado||'', ref: new URLSearchParams(location.search).get('r')||''};
+          intentado: A.intentado||'', ref,
+          emailSubject: sub, emailBody: body};
         fetch(SUBMIT_URL, {method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain'}, body:JSON.stringify(payload)}).catch(()=>{});
       }
       showReport(result, name);
