@@ -1034,6 +1034,7 @@
       <div class="field"><label>Nombre</label><input type="text" id="f-name" placeholder="Tu nombre"></div>
       <div class="field"><label>Email</label><input type="text" id="f-email" placeholder="tu@email.com"><div class="err" id="e-email">Revisa el email, no parece válido.</div></div>
       <div class="field"><label>WhatsApp <span style="text-transform:none;letter-spacing:0;color:var(--gold);">· recibe mi lectura de tu caso</span></label><input type="text" id="f-wa" placeholder="+57 300 000 0000"></div>
+      <div class="field"><label>¿Dónde te encuentro online? <span style="text-transform:none;letter-spacing:0;color:var(--gold);">· para afinar tu lectura</span></label><textarea id="f-online" placeholder="Tu web, Instagram, YouTube, LinkedIn... lo que tengas. Cuanto más me enseñes, más preciso es el diagnóstico que te puedo dar." style="min-height:80px;"></textarea></div>
       <button class="btn-wa" style="margin-top:18px;" onclick="submitCapture()">
         Ver mi diagnóstico
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1552,10 +1553,19 @@
       if(!eOK) return;
 
       const wa = document.getElementById('f-wa').value.trim();
+      const online = document.getElementById('f-online').value.trim();
       const result = buildResult();
       if(SUBMIT_URL){
-        const payload = {name, email, wa, ts:new Date().toISOString(),
-          nivel:result.level.n, score:result.total, arquetipo:result.findings[0]?.id||'',
+        // Brief legible: ¿pregunta? -> respuesta, en el orden en que las contestó
+        const detalle = path.map(i=>Q[i]).filter(q=>AL[q.id]).map(q=>q.text+' -> '+AL[q.id]).join('\n');
+        const dims = result.dims;
+        const dimStr = Object.keys(dims).map(k=>DIMNAMES[k]+': '+dims[k]+'/100').join(' | ');
+        const fugaTitulo = typeof result.findings[0].title==='function'?result.findings[0].title():result.findings[0].title;
+        const payload = {name, email, wa, online, ts:new Date().toISOString(),
+          nivel:result.level.n, nivelTitulo:result.level.t, score:result.total,
+          arquetipo:result.findings[0]?.id||'', fugaTitulo,
+          dimensiones: dimStr,
+          detalle,
           respuestas: Object.keys(AL).map(k=>k+': '+AL[k]).join(' | '),
           intentado: A.intentado||'', ref: new URLSearchParams(location.search).get('r')||''};
         fetch(SUBMIT_URL, {method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain'}, body:JSON.stringify(payload)}).catch(()=>{});
