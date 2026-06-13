@@ -1672,7 +1672,7 @@
 
     function copyResult(){
       const r = window._lastResult;
-      const txt = `Mi diagnóstico de fuga de ingresos (copyestratega.com/info)\n`+
+      const txt = `Mi diagnóstico de fuga de ingresos (copyestratega.com)\n`+
         `Nivel ${r.level.n}/5: ${r.level.t} (score ${r.total}/100)\n`+
         Object.keys(r.dims).map(k=>`- ${DIMNAMES[k]}: ${r.dims[k]}/100`).join('\n')+
         `\nFuga principal: ${typeof r.findings[0].title==='function'?r.findings[0].title():r.findings[0].title}`;
