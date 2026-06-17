@@ -1628,6 +1628,25 @@
         <div class="lscore">Score global: ${r.total}/100</div>
       </div>
 
+      ${(()=>{
+        const sym = currency;
+        const rows = [
+          ['Modelo', AL.modelo],
+          ['Facturación', (AL.fact && A.fact!=='fx') ? AL.fact+' '+sym+'/mes' : ''],
+          ['Ticket', AL.ticket ? AL.ticket+' '+sym : ''],
+          ['Trayectoria', AL.tiempo],
+          ['Fuente de leads', AL.fuente],
+          (A.lista==='no')
+            ? ['Audiencia', AL.audiencia ? (AL.audiencia + (AL.canal?(' · '+AL.canal):'')) : '']
+            : ['Lista de email', AL.lista||'']
+        ].filter(x=>x[1]);
+        if(!rows.length) return '';
+        return `<div class="rcard"><div class="ftag">Tu punto de partida</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px 24px;">`+
+          rows.map(x=>`<div><span style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-dim);margin-bottom:3px;">${x[0]}</span><b style="font-size:0.98rem;color:var(--ink);">${x[1]}</b></div>`).join('')+
+          `</div><p style="font-size:0.9rem;color:var(--ink-dim);margin:18px 0 0;line-height:1.6;">Todo lo que sigue está calculado sobre estos datos. Los tuyos, no los de un promedio.</p></div>`;
+      })()}
+
       <div class="rcard">
         <div class="ftag">El radar de tu sistema</div>
         ${Object.keys(r.dims).map(k=>`
@@ -1652,6 +1671,22 @@
           <div class="mathnote">Esto es aritmética, no una promesa. Cada asunción está a la vista y puedes moverla tú mismo. El valor no está en la cifra exacta: está en la diferencia entre lo que tus activos podrían generar con asunciones prudentes y lo que generan hoy.</div>
         </div>`;
       }
+
+      h += `
+        <div class="rcard">
+          <div class="ftag">Lo que vale mover una palanca pequeña</div>
+          <div class="mathnum" id="cmpout"></div>
+          <div class="mathsub" id="cmpsub"></div>
+          <div class="slider">
+            <div class="st"><span>Tu conversión a venta hoy</span><b id="c-act-v"></b></div>
+            <input type="range" id="c-act" min="1" max="10" step="0.5" value="2" oninput="recalcCmp()">
+          </div>
+          <div class="slider">
+            <div class="st"><span>A dónde podría llegar</span><b id="c-obj-v"></b></div>
+            <input type="range" id="c-obj" min="1" max="12" step="0.5" value="3" oninput="recalcCmp()">
+          </div>
+          <div class="mathnote">El mismo tráfico y la misma oferta, convirtiendo un poco mejor. Pasar de 2% a 3% no es trabajar el doble: es la misma gente, mejor llevada. Esto es aritmética de conversión, no una promesa.</div>
+        </div>`;
 
       // CLIFFHANGER: el titular de la fuga, pero el desglose se entrega a mano
       const teaser = nF>=2
@@ -1686,6 +1721,8 @@
       show('report');
       setTimeout(()=>{document.querySelectorAll('.dbar i').forEach(b=>b.style.width=b.dataset.w+'%')},100);
       if(MM) recalc();
+      window._factHoy = MID.fact||0;
+      recalcCmp();
       window._lastResult = r;
       window._lastName = name;
     }
@@ -1699,6 +1736,33 @@
         document.getElementById(s.id+'-v').textContent = el.value + s.unit;
       });
       document.getElementById('mathout').textContent = MM.isLeads ? MM.fmt(MM.calc(v)) : MM.fmt(MM.calc(v)) + '/mes';
+    }
+
+    function fmtMoney(n){ return currency + Math.round(n).toLocaleString('es'); }
+
+    function recalcCmp(){
+      const aEl=document.getElementById('c-act'), oEl=document.getElementById('c-obj');
+      if(!aEl||!oEl) return;
+      const act=parseFloat(aEl.value), obj=parseFloat(oEl.value);
+      document.getElementById('c-act-v').textContent = act+'%';
+      document.getElementById('c-obj-v').textContent = obj+'%';
+      const fact = window._factHoy||0;
+      const out=document.getElementById('cmpout'), sub=document.getElementById('cmpsub');
+      if(obj<=act){
+        out.textContent='—';
+        sub.textContent='Sube el objetivo por encima de tu conversión de hoy para ver el efecto.';
+        return;
+      }
+      const mult = obj/act;
+      if(fact>0){
+        const proj=fact*mult, delta=proj-fact;
+        out.textContent='+'+fmtMoney(delta)+'/mes';
+        sub.innerHTML='Pasarías de <b style="color:var(--ink);">'+fmtMoney(fact)+'</b> a <b style="color:var(--ink);">'+fmtMoney(proj)+'</b> al mes. Son <b style="color:var(--ink);">'+fmtMoney(delta*12)+' al año</b>, solo por convertir mejor lo que ya te entra.';
+      } else {
+        const pct=Math.round((mult-1)*100);
+        out.textContent='+'+pct+'%';
+        sub.innerHTML='Subir tu conversión de '+act+'% a '+obj+'% es subir tu facturación un <b style="color:var(--ink);">+'+pct+'%</b>, con el mismo tráfico de hoy.';
+      }
     }
 
     function copyResult(){
