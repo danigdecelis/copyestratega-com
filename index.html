@@ -1033,8 +1033,12 @@
       <p class="section-lead" style="margin-bottom:34px;">Dime a quién se lo entrego. Lo ves en pantalla ahora mismo, completo. Si dejas tu WhatsApp, te paso además mi lectura personal de tu caso.</p>
       <div class="field"><label>Nombre</label><input type="text" id="f-name" placeholder="Tu nombre"></div>
       <div class="field"><label>Email</label><input type="text" id="f-email" placeholder="tu@email.com"><div class="err" id="e-email">Revisa el email, no parece válido.</div></div>
-      <div class="field"><label>WhatsApp <span style="text-transform:none;letter-spacing:0;color:var(--gold);">· recibe mi lectura de tu caso</span></label><input type="text" id="f-wa" placeholder="+57 300 000 0000"></div>
-      <div class="field"><label>¿Dónde te encuentro online? <span style="text-transform:none;letter-spacing:0;color:var(--gold);">· para afinar tu lectura</span></label><textarea id="f-online" placeholder="Tu web, Instagram, YouTube, LinkedIn... lo que tengas. Cuanto más me enseñes, más preciso es el diagnóstico que te puedo dar." style="min-height:80px;"></textarea></div>
+      <div style="margin-top:20px;padding:22px;border:1px solid var(--gold);border-radius:14px;background:rgba(201,168,76,0.06);">
+        <p style="font-weight:700;color:var(--ink);margin:0 0 4px;font-size:1rem;">Para mi lectura personal de tu caso</p>
+        <p style="font-size:0.88rem;color:var(--ink-dim);margin:0 0 18px;line-height:1.55;">Tu diagnóstico lo ves en pantalla igual. Esto es lo que necesito para revisar tu caso a mano y decirte qué cambiar, en vez de darte consejos genéricos.</p>
+        <div class="field"><label>Tu web y tus redes</label><textarea id="f-online" placeholder="Pega aquí tu web, Instagram, YouTube o LinkedIn. Es justo lo que miro para que la lectura sea de TU negocio y no de uno cualquiera." style="min-height:80px;"></textarea></div>
+        <div class="field" style="margin-bottom:0;"><label>WhatsApp <span style="text-transform:none;letter-spacing:0;color:var(--gold);">· por aquí te la mando</span></label><input type="text" id="f-wa" placeholder="+57 300 000 0000"></div>
+      </div>
       <button class="btn-wa" style="margin-top:18px;" onclick="submitCapture()">
         Ver mi diagnóstico
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
