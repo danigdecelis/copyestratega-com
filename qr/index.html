@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Copy Estratega · Hablemos por WhatsApp</title>
+<meta name="robots" content="noindex">
+<noscript><meta http-equiv="refresh" content="0;url=https://wa.me/34628347382?text=Hola%20Daniel.%20Soy%20%5Btu%20nombre%5D%20y%20mi%20negocio%20es%20%5B%20%5D.%20Lo%20que%20m%C3%A1s%20necesito%20ahora%20es%20%5B%20%5D.%20Vengo%20del%20Hotmart%20Fire%20Sessions%20de%20Medell%C3%ADn"></noscript>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#C9A84C;--dark:#0A0A0A;--cream:#F8F6F0;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:var(--dark);color:var(--cream);min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:32px;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:420px;}
+.logo{height:46px;margin-bottom:40px;}
+h1{font-family:'Playfair Display',serif;font-weight:800;font-size:28px;line-height:1.2;margin-bottom:16px;}
+p{font-size:15px;line-height:1.6;color:rgba(248,246,240,0.7);margin-bottom:32px;}
+.btn{display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:var(--dark);font-weight:700;font-size:16px;text-decoration:none;padding:16px 32px;border-radius:8px;transition:opacity .2s;}
+.btn:hover{opacity:.9;}
+.spin{width:22px;height:22px;border:2px solid rgba(201,168,76,0.25);border-top-color:var(--gold);border-radius:50%;margin:0 auto 28px;animation:s .8s linear infinite;}
+@keyframes s{to{transform:rotate(360deg);}}
+.small{margin-top:24px;font-size:12px;color:rgba(248,246,240,0.4);}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <img class="logo" src="https://danigdecelis.github.io/factor-rh-strategy/logo-ca.png" alt="Copy Estratega">
+    <div class="spin"></div>
+    <h1>Te abro WhatsApp</h1>
+    <p>En un segundo se abre una conversación conmigo con el mensaje listo. Solo rellena tu nombre, tu negocio y lo que necesitas, y envíalo.</p>
+    <a class="btn" id="wa" href="#">Abrir WhatsApp</a>
+    <div class="small">Si no se abre solo, toca el botón.</div>
+  </div>
+<script>
+  var msg = "Hola Daniel. Soy [tu nombre] y mi negocio es [ ]. Lo que más necesito ahora es [ ]. Vengo del Hotmart Fire Sessions de Medellín";
+  var url = "https://wa.me/34628347382?text=" + encodeURIComponent(msg);
+  document.getElementById('wa').href = url;
+  setTimeout(function(){ window.location.replace(url); }, 600);
+</script>
+</body>
+</html>
