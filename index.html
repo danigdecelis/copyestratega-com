@@ -1037,6 +1037,7 @@
         <p style="font-weight:700;color:var(--ink);margin:0 0 4px;font-size:1rem;">Para mi lectura personal de tu caso</p>
         <p style="font-size:0.88rem;color:var(--ink-dim);margin:0 0 18px;line-height:1.55;">Tu diagnóstico lo ves en pantalla igual. Esto es lo que necesito para revisar tu caso a mano y decirte qué cambiar, en vez de darte consejos genéricos.</p>
         <div class="field"><label>Tu web y tus redes</label><textarea id="f-online" placeholder="Pega aquí tu web, Instagram, YouTube o LinkedIn. Es justo lo que miro para que la lectura sea de TU negocio y no de uno cualquiera." style="min-height:80px;"></textarea></div>
+        <div class="field"><label>¿Qué vendes y cómo lo vendes?</label><textarea id="f-modelo" placeholder="En una línea: qué vendes exactamente y cómo lo vendes (tu funnel). Cuanto más concreto, más se afina tu lectura." style="min-height:70px;"></textarea></div>
         <div class="field" style="margin-bottom:0;"><label>WhatsApp <span style="text-transform:none;letter-spacing:0;color:var(--gold);">· por aquí te la mando</span></label><input type="text" id="f-wa" placeholder="+57 300 000 0000"></div>
       </div>
       <button class="btn-wa" style="margin-top:18px;" onclick="submitCapture()">
@@ -1083,10 +1084,11 @@
     ===================================================== */
     const Q = [
     {id:'modelo', block:'Tu negocio', text:'¿Qué vendes principalmente?', opts:[
-      {v:'curso', t:'Cursos o formaciones grabadas que se compran y se consumen solas'},
-      {v:'envivo', t:'Formaciones en vivo o por cohortes'},
+      {v:'curso', t:'Cursos o formaciones online (grabadas, en vivo o cohortes)'},
+      {v:'producto', t:'Productos digitales que no son formación (plantillas, recursos, kits, comunidad)'},
       {v:'membresia', t:'Membresía o suscripción'},
       {v:'highticket', t:'Mentoría, consultoría o programas high ticket'},
+      {v:'servicio', t:'Servicios digitales hechos para el cliente'},
       {v:'mezcla', t:'Una mezcla de varios'}]},
 
     {id:'ticket', block:'Tu negocio', text:'¿Cuál es tu ticket principal?', sub:'El precio del producto que más vendes o más pesa en tu facturación.', currency:true, opts:[
@@ -1104,7 +1106,7 @@
       {v:'f5', t:'Más de 100.000', mid:150000},
       {v:'fx', t:'Prefiero no decirlo', mid:0}]},
 
-    {id:'tiempo', block:'Tu negocio', text:'¿Cuánto llevas vendiendo formación online?', opts:[
+    {id:'tiempo', block:'Tu negocio', text:'¿Cuánto llevas vendiendo online?', opts:[
       {v:'menos1', t:'Menos de 1 año'},
       {v:'1a3', t:'Entre 1 y 3 años'},
       {v:'mas3', t:'Más de 3 años'}]},
@@ -1429,7 +1431,7 @@
 
     {id:'sinrecurrencia', sev:7, cond:a=>a.recurrente==='no'&&a.tiempo!=='menos1',
      title:'Cada mes empiezas de cero',
-     body:()=>`Llevas ${AL.tiempo?.toLowerCase()} en esto y no tienes ninguna oferta recurrente. Eso significa que el día 1 de cada mes tu facturación vuelve a cero y toda la presión cae sobre la próxima venta. Los negocios de formación que duermen tranquilos tienen un suelo recurrente que paga los fijos antes de empezar el mes.`,
+     body:()=>`Llevas ${AL.tiempo?.toLowerCase()} en esto y no tienes ninguna oferta recurrente. Eso significa que el día 1 de cada mes tu facturación vuelve a cero y toda la presión cae sobre la próxima venta. Los negocios digitales que duermen tranquilos tienen un suelo recurrente que paga los fijos antes de empezar el mes.`,
      palanca:'No hace falta montar una membresía mañana. Empieza por la pregunta: ¿qué necesitan tus clientes DESPUÉS de tu producto principal? Ahí suele estar la oferta recurrente esperando.'},
 
     {id:'monoproducto', sev:6, cond:a=>a.recompra==='unica',
@@ -1558,6 +1560,7 @@
 
       const wa = document.getElementById('f-wa').value.trim();
       const online = document.getElementById('f-online').value.trim();
+      const modeloOpen = document.getElementById('f-modelo').value.trim();
       const result = buildResult();
       if(SUBMIT_URL){
         const ref = new URLSearchParams(location.search).get('r')||'';
@@ -1587,7 +1590,8 @@
           '  Nombre:    '+(name||'')+'\n'+
           '  Email:     '+(email||'')+'\n'+
           '  WhatsApp:  '+(wa||'(no ha dejado)')+'\n'+
-          '  Online:    '+(online||'(no ha dejado enlaces)')+'\n\n'+
+          '  Online:    '+(online||'(no ha dejado enlaces)')+'\n'+
+          '  Vende/funnel: '+(modeloOpen||'(no ha especificado)')+'\n\n'+
           'RESULTADO\n'+
           '  Nivel '+result.level.n+'/5  ('+result.level.t+')\n'+
           '  Score '+result.total+'/100\n'+
@@ -1599,7 +1603,7 @@
           'QUE HA INTENTADO YA\n'+linea+'\n'+(A.intentado&&A.intentado.trim()?A.intentado:'(no ha escrito nada)')+'\n\n'+
           linea+'\nMaterial listo para investigar su presencia online y, si merece la pena, montar un strategy doc.\n';
 
-        const payload = {name, email, wa, online, ts:new Date().toISOString(),
+        const payload = {name, email, wa, online, modeloOpen, ts:new Date().toISOString(),
           nivel:result.level.n, nivelTitulo:result.level.t, score:result.total,
           arquetipo:result.findings[0]?.id||'', fugaTitulo,
           dimensiones: dimStr, detalle,
