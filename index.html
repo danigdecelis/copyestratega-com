@@ -1202,10 +1202,10 @@
       {v:'no', t:'No la sé'},
       {v:'nollamadas', t:'No vendo por llamadas'}]},
 
-    {id:'recurrente', block:'Recurrencia', text:'¿Tienes alguna oferta recurrente (membresía, suscripción, retainer)?', show:a=>a.modelo!=='membresia', opts:[
-      {v:'si', t:'Sí'},
-      {v:'pensada', t:'No, pero la tengo pensada'},
-      {v:'no', t:'No'}]},
+    {id:'recurrente', block:'Recurrencia', text:'¿Parte de tu facturación se repite cada mes sin tener que cerrar una venta nueva? (una membresía, una suscripción, un retainer o un servicio con cobro mensual)', show:a=>a.modelo!=='membresia', opts:[
+      {v:'si', t:'Sí, tengo ingresos que se repiten cada mes'},
+      {v:'pensada', t:'No, pero lo tengo pensado'},
+      {v:'no', t:'No, cada mes empiezo de cero'}]},
 
     {id:'churn', block:'Recurrencia', text:'¿Sabes tu tasa de baja mensual (churn)?', show:a=>a.modelo==='membresia', opts:[
       {v:'si', t:'Sí, la mido'},
